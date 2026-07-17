@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/edithall.css' %}">
+</head>
+<body>
+    <div class="MainPanel">
+
+    </div>
+    <div class="Env">
+        <h3 class="path">{{ hall_name }}(id={{hall_id}})</h3>
+        <div class="viewport">
+            <div class="hall" id="hall">
+                
+            </div>
+        </div>
+        <div class="PropertiesPanel">
+
+        </div>
+    </div>
+    <script src="{% static 'js/edithall.js' %}"></script>
+</body>
+</html>
