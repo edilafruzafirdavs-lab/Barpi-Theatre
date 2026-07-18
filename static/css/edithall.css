@@ -4,7 +4,7 @@ body{
 
 .Env{
     width: 100%;
-    height: 853px;
+    height: 851px;
     display: flex;
     justify-content: center;
 }
@@ -14,6 +14,7 @@ body{
     width: 80%;
     height: 100%;
     overflow: hidden;
+    border: 1px solid black;
 }
 
 .hall{
@@ -26,13 +27,16 @@ body{
 }
 
 .MainPanel{
-    background-color: blueviolet;
+    background-color: rgb(104, 104, 104);
     width: 100%;
     height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items:start;
 }
 
 .PropertiesPanel{
-    background-color: brown;
+    background-color: rgb(48, 48, 48);
     width: 20%;
     height: 100%;
 }
@@ -45,4 +49,36 @@ body{
     display: flex;
     justify-content: left;
     user-select: none;
+}
+
+.CreateObjectButton{
+    background-color: rgb(36, 36, 36);
+    text-decoration: none;
+    color: white;
+    width: 5%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.CreateObjectPanel{
+    background-color: rgb(34, 34, 34, 0.9);
+    width: 10%;
+    height: 20%;
+    position: absolute;
+    transform: translateY(100px);
+    z-index: 200;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.CreateBtn{
+    width: 100%;
+    height: 25%;
+    font-size: large;
 }

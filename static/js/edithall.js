@@ -1,4 +1,13 @@
 const hall = document.getElementById('hall')
+const CreateObjectButton = document.getElementById('CreateObjectButton')
+const CreateObjectPanel = document.getElementById('CreateObjectPanel')
+const CreateButtons = document.querySelectorAll('.CreateBtn')
+
+CreateButtons.forEach((el,i) => {
+    el.addEventListener("click", (event) => {
+        alert(el.textContent)
+    })
+})
 
 let x = 0;
 let y = 0;
@@ -43,3 +52,8 @@ hall.addEventListener("wheel", (event) => {
     hall.style.transform =
         `translate(${x}px, ${y}px) scale(${scale})`;
 });
+
+CreateObjectButton.addEventListener("click", (event) => {
+    CreateObjectPanel.style.opacity = CreateObjectPanel.style.opacity == 0 ? 1:0
+})
+

@@ -10,7 +10,23 @@
 </head>
 <body>
     <div class="MainPanel">
-
+        <button class="CreateObjectButton" id="CreateObjectButton">
+            Create Object
+        </button>
+        <div class="CreateObjectPanel" id="CreateObjectPanel">
+            <button class="CreateBtn CreateSeat" id="CreateSeat">
+                Seat
+            </button>
+            <button class="CreateBtn CreateZone" id="CreateZone">
+                Zone
+            </button>
+            <button class="CreateBtn CreateSeat" id="CreateSeat">
+                1
+            </button>
+            <button class="CreateBtn CreateSeat" id="CreateSeat">
+                2
+            </button>
+        </div>
     </div>
     <div class="Env">
         <h3 class="path">{{ hall_name }}(id={{hall_id}})</h3>
@@ -23,6 +39,6 @@
 
         </div>
     </div>
-    <script src="{% static 'js/edithall.js' %}"></script>
+    <script defer src="{% static 'js/edithall.js' %}"></script>
 </body>
 </html>
