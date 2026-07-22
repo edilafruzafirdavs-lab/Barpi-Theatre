@@ -1,13 +1,37 @@
-const hall = document.getElementById('hall')
-const CreateObjectButton = document.getElementById('CreateObjectButton')
-const CreateObjectPanel = document.getElementById('CreateObjectPanel')
-const CreateButtons = document.querySelectorAll('.CreateBtn')
+import {Hall,HallObject,Zone,Seat} from './Data/HallObjects.js';
+
+const path = document.getElementById('Path');
+const hall = document.getElementById('hall');
+const CreateObjectButton = document.getElementById('CreateObjectButton');
+const CreateObjectPanel = document.getElementById('CreateObjectPanel');
+const CreateButtons = document.querySelectorAll('.CreateBtn');
+
+const Hall_Name = path.getAttribute('hallname');
+const Hall_Id = path.getAttribute('hallid');
+
+const HallObj = new Hall(Hall_Id,Hall_Name);
+
+path.textContent = `${Hall_Name}(id=${Hall_Id})`;
+
+const TypesOfObjects = {
+    'Seat':() => new Seat(0,0),
+    'Zone':() => new Zone(0,0),
+};
+
+function CreateObject(typeofobj){
+    const obj = TypesOfObjects[typeofobj]
+    if (obj){
+        const object = obj()
+        HallObj[`Add${object.Name}`](object)
+        console.log(HallObj)
+    }
+};
 
 CreateButtons.forEach((el,i) => {
     el.addEventListener("click", (event) => {
-        alert(el.textContent)
+        CreateObject(el.getAttribute('objtype'))
     })
-})
+});
 
 let x = 0;
 let y = 0;
@@ -41,6 +65,49 @@ hall.addEventListener("mousemove", (event) => {
         `translate(${x}px, ${y}px) scale(${scale})`;
 });
 
+let hovered = null;
+let selected = null;
+
+document.addEventListener("mouseover", (event) => {
+    const target = event.target;
+
+    if (!target.classList.contains("Object")) {
+        if (hovered && hovered !== selected) {
+            hovered.style.border = "0";
+        }
+        return
+    };
+
+    if (hovered && hovered !== selected) {
+        hovered.style.border = "0";
+    }
+
+    hovered = target;
+
+    if (hovered !== selected) {
+        hovered.style.border = "1px solid red";
+    }
+});
+
+document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!target.classList.contains("Object")) {
+        if (selected) {
+            selected.style.border = "0";
+            selected = null;
+        }
+        return;
+    }
+
+    if (selected) {
+        selected.style.border = "0";
+    }
+
+    selected = target;
+    selected.style.border = "2px solid black";
+});
+
 hall.addEventListener("wheel", (event) => {
     event.preventDefault();
 
@@ -55,5 +122,5 @@ hall.addEventListener("wheel", (event) => {
 
 CreateObjectButton.addEventListener("click", (event) => {
     CreateObjectPanel.style.opacity = CreateObjectPanel.style.opacity == 0 ? 1:0
-})
+});
 

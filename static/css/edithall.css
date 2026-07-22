@@ -35,10 +35,26 @@ body{
     align-items:start;
 }
 
-.PropertiesPanel{
+.SecondPanel{
     background-color: rgb(48, 48, 48);
     width: 20%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.PropertiesPanel{
+    background-color: blueviolet;
+    height: 50%;
+    width: 100%;
+}
+
+.ExplorerPanel{
+    background-color: aqua;
+    height: 50%;
+    width: 100%;
+    overflow-y: auto;
 }
 
 .path{

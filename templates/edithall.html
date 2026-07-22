@@ -14,31 +14,35 @@
             Create Object
         </button>
         <div class="CreateObjectPanel" id="CreateObjectPanel">
-            <button class="CreateBtn CreateSeat" id="CreateSeat">
+            <button class="CreateBtn CreateSeat" id="CreateSeat" objtype="Seat">
                 Seat
             </button>
-            <button class="CreateBtn CreateZone" id="CreateZone">
+            <button class="CreateBtn CreateZone" id="CreateZone" objtype="Zone">
                 Zone
             </button>
-            <button class="CreateBtn CreateSeat" id="CreateSeat">
+            <button class="CreateBtn CreateSeat" id="CreateSeat" objtype="lol">
                 1
             </button>
-            <button class="CreateBtn CreateSeat" id="CreateSeat">
+            <button class="CreateBtn CreateSeat" id="CreateSeat" objtype="kek">
                 2
             </button>
         </div>
     </div>
     <div class="Env">
-        <h3 class="path">{{ hall_name }}(id={{hall_id}})</h3>
+        <h3 class="path" id="Path" hallname="{{hall_name}}" hallid="{{hall_id}}"></h3>
         <div class="viewport">
             <div class="hall" id="hall">
-                
             </div>
         </div>
-        <div class="PropertiesPanel">
-
+        <div class="SecondPanel">
+            <div class="ExplorerPanel">
+                ExplorerPanel
+            </div>
+            <div class="PropertiesPanel">
+                PropertiesPanel
+            </div>
         </div>
     </div>
-    <script defer src="{% static 'js/edithall.js' %}"></script>
+    <script defer type="module" src="{% static 'js/edithall.js' %}"></script>
 </body>
 </html>
