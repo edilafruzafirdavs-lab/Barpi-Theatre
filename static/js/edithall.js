@@ -11,6 +11,10 @@ const Hall_Id = path.getAttribute('hallid');
 
 const HallObj = new Hall(Hall_Id,Hall_Name);
 
+export const CurrentLocalEnvironment = {
+    CSLE : hall
+}
+
 path.textContent = `${Hall_Name}(id=${Hall_Id})`;
 
 const TypesOfObjects = {
@@ -22,7 +26,7 @@ function CreateObject(typeofobj){
     const obj = TypesOfObjects[typeofobj]
     if (obj){
         const object = obj()
-        HallObj[`Add${object.Name}`](object)
+        HallObj[`Add${object.Name.GetValue()}`](object)
         console.log(HallObj)
     }
 };
@@ -32,6 +36,7 @@ CreateButtons.forEach((el,i) => {
         CreateObject(el.getAttribute('objtype'))
     })
 });
+
 
 let x = 0;
 let y = 0;

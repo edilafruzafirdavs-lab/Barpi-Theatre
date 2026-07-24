@@ -1,73 +1,167 @@
+import {CurrentLocalEnvironment} from '../edithall.js'
+
+class Property{
+    constructor(name,value,{
+        editable = true,
+        type = 'string',
+    } = {}){
+        this.name = name;
+        this.value = value;
+        this.editable = editable;
+        this.type = type
+    }
+    SetValue(newvalue){
+        try{
+            if (!this.editable) {
+                throw new Error(`Error: Property \'${this.name}\' can\'t be changed`)
+            }
+            else{
+                this.value = newvalue
+            }
+        }
+        catch(error){
+            console.log(error.message)
+        }
+    }
+    GetValue(){
+        return this.value
+    }
+}
+
 export class Hall{
     constructor(hallid,name){
-        this.HallId = hallid;
-        this.Name = name;
-        this.Seats = [];
-        this.Zones = [];
+        this.HallId = new Property('HallId',hallid,{
+            editable : false,
+            type : 'number',
+        });
+        this.SelfLocalEnvironment = new Property('SelfLocalEnvironment',document.getElementById('hall'),{
+            editable : false,
+            type : 'object'
+        });
+        this.Name = new Property('Name',name,{
+            editable : false,
+        });
+        this.Seats = new Property('Seats',{},{
+            editable : false,
+            type : 'object',
+        });
+        this.Zones = new Property('Zones',{},{
+            editable : false,
+            type : 'object',
+        });
     }
     AddSeat(seat){
-        this.Seats.push(seat);
+        this.Seats[seat.Id.GetValue()] = seat;
     }
     AddZone(zone){
-        this.Zones.push(zone);
+        this.Zones[zone.Id.GetValue()] = zone;
     }
 }
 
 export class HallObject {
-    constructor(name){
-        this.Id = crypto.randomUUID();
-        this.Name = name;
+    constructor(locenv,name){
+        this.Id = new Property('Id',crypto.randomUUID(),{
+            editable : false
+        });
+        this.LocalEnvironment = new Property('LocalEnvironment',locenv,{
+            editable : true,
+            type : 'object'
+        })
+        this.Name = new Property('Name',name);;
     }
 }
 
 export class Zone extends HallObject{
-    constructor(x,y) {
+    constructor(locenv,x,y) {
         super('Zone');
-        this.x = x;
-        this.y = y;
+        this.LocalEnvironment = new Property('LocalEnvironment',locenv,{
+            editable : true,
+            type : 'object'
+        });
+        this.x = new Property('x',x,{
+            type : 'number'
+        });
+        this.y = new Property('y',y,{
+            type : 'number'
+        });;
 
-        this.Seats = [];
+        this.Seats = new Property('Seats', {}, {
+            editable : false,
+            type : 'object'
+        });
+        this.Zones = new Property('Zones', {}, {
+            editable : false,
+            type : 'object'
+        });
 
         this.CreateVisObj();
+    }
+
+    CreateSelfLocalEnvironment() {
+        const SLE = document.createElement('div');
+        SLE.style.backgroundColor = 'white';
+        SLE.style.width = '100%';
+        SLE.style.height = '100%';
+        CurrentLocalEnvironment.append(SLE);
     }
 
     CreateVisObj() {
         const hall = document.getElementById("hall");
 
-        this.ZoneVisObj = document.createElement("div");
+        this.VisObj = new Property('VisObj', document.createElement("div"), {
+            editable : false,
+            type : 'object'
+        }) ;
 
-        this.ZoneVisObj.style.position = "absolute";
-        this.ZoneVisObj.style.width = "5%";
-        this.ZoneVisObj.style.height = "5%";
-        this.ZoneVisObj.style.backgroundColor = "Green";
-        this.ZoneVisObj.textContent = "Zone";
+        this.VisObj.value.style.position = "absolute";
+        this.VisObj.value.style.width = "5%";
+        this.VisObj.value.style.height = "5%";
+        this.VisObj.value.style.backgroundColor = "Green";
+        this.VisObj.value.textContent = "Zone";
+        this.VisObj.value.setAttribute('Id',this.Id.GetValue());
         
-        this.ZoneVisObj.classList.add('Object');
+        this.VisObj.value.classList.add('Object');
 
-        this.SetPosition(this.x, this.y);
+        this.SetPosition(this.x.GetValue(), this.y.GetValue());
 
-        hall.append(this.ZoneVisObj);
+        hall.append(this.VisObj.GetValue());
     }
 
     SetPosition(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x.SetValue(x);
+        this.y.SetValue(y);
 
-        this.ZoneVisObj.style.left = `${x}%`;
-        this.ZoneVisObj.style.top = `${y}%`;
+        this.VisObj.value.style.left = `${x}%`;
+        this.VisObj.value.style.top = `${y}%`;
+    }
+
+    SetLocalEnvironment(locenv){
+        this.LocalEnvironment.SetValue(locenv);
     }
 
     AddSeat(seat){
-        this.Seats.push(seat);
-        seat.SetZone(this);
+        this.Seats[seat.Id.GetValue()] = seat;
+        seat.SetZone(this)
+    }
+
+    AddZone(zone){
+        this.Zones[zone.Id.GetValue()] = zone;
     }
 }
 
 export class Seat extends HallObject{
-    constructor(x, y) {
+    constructor(locenv,x, y) {
         super('Seat');
-        this.x = x;
-        this.y = y;
+        this.LocalEnvironment = new Property('LocalEnvironment',locenv,{
+            editable : true,
+            type : 'object'
+        });
+        this.x = new Property('x',x,{
+            type : 'number'
+        });
+        this.y = new Property('y',y,{
+            type : 'number'
+        });
 
         this.CreateVisObj();
     }
@@ -75,30 +169,31 @@ export class Seat extends HallObject{
     CreateVisObj() {
         const hall = document.getElementById("hall");
 
-        this.SeatVisObj = document.createElement("div");
+        this.VisObj = document.createElement("div");
 
-        this.SeatVisObj.style.position = "absolute";
-        this.SeatVisObj.style.width = "1%";
-        this.SeatVisObj.style.height = "1%";
-        this.SeatVisObj.style.backgroundColor = "red";
-        this.SeatVisObj.textContent = "Seat";
+        this.VisObj.value.style.position = "absolute";
+        this.VisObj.value.style.width = "1%";
+        this.VisObj.value.style.height = "1%";
+        this.VisObj.value.style.backgroundColor = "red";
+        this.VisObj.value.textContent = "Seat";
+        this.VisObj.value.setAttribute('Id',this.Id.GetValue());
 
-        this.SeatVisObj.classList.add('Object');
+        this.VisObj.value.classList.add('Object');
 
-        this.SetPosition(this.x, this.y);
+        this.SetPosition(this.x.GetValue(), this.y.GetValue());
 
-        hall.append(this.SeatVisObj);
+        hall.append(this.VisObj.GetValue());
     }
 
     SetPosition(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x.SetValue(x);
+        this.y.SetValue(y);
 
-        this.SeatVisObj.style.left = `${x}%`;
-        this.SeatVisObj.style.top = `${y}%`;
+        this.VisObj.value.style.left = `${x}%`;
+        this.VisObj.value.style.top = `${y}%`;
     }
 
-    SetZone(zone){
-        this.Zone = zone;
+    SetLocalEnvironment(locenv){
+        this.LocalEnvironment.SetValue(locenv);
     }
 }
